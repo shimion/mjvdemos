@@ -1,0 +1,62 @@
+<div class="question">
+	<h2 class="ui horizontal divider header">Getting Started</h2>
+	<form class="ui form" action="" name="step1">
+			<div class="inline fields">
+				<div class="four wide field">
+					<label>Name</label>
+				</div>
+		    <div class="six wide field">
+		      <input type="text" placeholder="First Name" ng-model="apply.fname" required>
+		    </div>
+		    <div class="six wide field">
+		      <input type="text" placeholder="Last Name" ng-model="apply.lname" required>
+		    </div>
+		  </div>
+		  <!-- inline fields -->
+		  <div class="inline fields">
+		  	<div class="four wide field">
+		  		<label>Phone Number</label>
+		  	</div>
+		    <div class="four wide field">
+		      <input type="text" placeholder="Home" ng-model="apply.home" ng-required="!(apply.home || apply.cell || apply.work)">
+		    </div>
+		    <div class="four wide field">
+		      <input type="text" placeholder="Cellphone" ng-model="apply.cell" ng-required="!(apply.home || apply.cell.length || apply.work)">
+		    </div>
+		    <div class="four wide field">
+		      <input type="text" placeholder="Business" ng-model="apply.work" ng-required="!(apply.home || apply.cell || apply.work)">
+		    </div>
+		  </div>
+		  <!-- inline fields -->
+		  <div class="inline fields">
+				<div class="four wide field">
+					<label>Email</label>
+				</div>
+				<div class="twelve wide field">
+					<input type="text" placeholder="Email Address" ng-model="apply.email">
+				</div>
+		  </div>
+		  <!-- inline fields -->
+		  <h3>Do you want to finance the purchase of a home or refinance an existing loan ?</h3>
+		  <div class="inline fields">
+		    <div class="field">
+		      <div class="ui radio checkbox">
+		        <input type="radio" name="type" ng-model="apply.type" value="refinance" ng-required="!apply.type">
+		        <label>Refinance</label>
+		      </div>
+		      <div class="ui radio checkbox">
+		        <input type="radio" name="type" ng-model="apply.type" value="purchase" ng-required="!apply.type">
+		        <label>Purchase</label>
+		      </div>
+		    </div>
+		  </div>
+		  <!-- inline fields -->
+		  <div class="button-container">
+				<button class="ui button black" href="#">Open your Saved Application</button>
+				<button class="ui button black" href="#">Call for Assistance</button>
+				<button class="ui button red" href="#" ng-click="goBack()">Back</button>
+				<button class="ui button green" href="#" ui-sref='form.step2' ng-disabled="step1.$invalid">Next</button>
+			</div>
+			<!-- buttons -->
+	</form>
+</div>

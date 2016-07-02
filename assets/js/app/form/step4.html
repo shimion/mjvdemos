@@ -1,0 +1,110 @@
+<div class="question">
+	<h2 class="ui horizontal divider header">Employment</h2>
+	<form class="form ui" action="" name="step4">
+		<div class="fields">
+	    <div class="sixteen wide field">
+				<h3><label>Are you Self Employed ?</label></h3>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.self_employed" value="Yes" ng-required="!apply.self_employed">
+	        <label>Yes</label>
+	      </div>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.self_employed" value="No" ng-required="!apply.self_employed">
+	        <label>No</label>
+	      </div>
+	    </div>
+	  </div>
+	  <!-- inline fields -->
+		<div class="inline fields" ng-if="apply.self_employed === 'No'">
+			<div class="four wide field">
+				<label>Employer Name:</label>
+			</div>
+	    <div class="twelve wide field">
+				<input type="text" ng-model="apply.employer_name" required>
+	    </div>
+	  </div>
+	  <!-- inline fields -->
+	  <div class="inline fields" ng-if="apply.self_employed === 'Yes'">
+			<div class="four wide field">
+				<label>Company Name:</label>
+			</div>
+	    <div class="twelve wide field">
+				<input type="text" ng-model="apply.employer_name" required>
+	    </div>
+	  </div>
+	  <!-- inline fields -->
+	  <div class="inline fields">
+			<div class="four wide field">
+				<label>Position/Title:</label>
+			</div>
+	    <div class="twelve wide field">
+				<input type="text" ng-model="apply.position" required>
+	    </div>
+	  </div>
+	  <!-- inline fields -->
+	  <div class="inline fields">
+			<div class="four wide field">
+				<label>Length of employment:</label>
+			</div>
+	    <div class="twelve wide field">
+				<select ng-model="apply.yr_job"  ng-options="years.value as years.years for years in yearList" dropdown required>
+					<option selected value="">Select Option</option>
+				</select>
+	    </div>
+	  </div>
+	  <!-- inline fields -->
+	  <div class="inline fields">
+			<div class="four wide field">
+				<label>Years working in the industry:</label>
+			</div>
+	    <div class="twelve wide field">
+				<select ng-model="apply.yr_work"  ng-options="years.value as years.years for years in yearList" dropdown required>
+					<option selected value="">Select Option</option>
+				</select>
+	    </div>
+	  </div>
+	  <!-- inline fields -->
+	  <div ng-if="apply.yr_job === 1">
+	  	<h2 class="ui horizontal divider header">Previous Employment Information</h2>
+		  <div class="inline fields">
+				<div class="four wide field">
+					<label>Employer Name:</label>
+				</div>
+		    <div class="twelve wide field">
+					<input type="text" ng-model="apply.prev_employer" required>
+		    </div>
+		  </div>
+		  <!-- inline fields -->
+		  <div class="inline fields">
+				<div class="four wide field">
+					<label>Position/Title:</label>
+				</div>
+		    <div class="twelve wide field">
+					<input type="text" ng-moedl="apply.prev_position" required>
+		    </div>
+		  </div>
+		  <!-- inline fields -->
+		  <div class="inline fields">
+				<div class="four wide field">
+					<label>Length of Employment:</label>
+				</div>
+		    <div class="six wide field">
+					<input type="date" ng-model="apply.prev_from" required>
+		    </div>
+		    <div class="six wide field">
+		    	<input type="date" ng-model="apply.prev_to" required>
+		    </div>
+		  </div>
+		  <!-- inline fields -->
+	  </div>
+	  <!-- end conditional -->
+	  <div class="button-container">
+	  	<button class="button ui black" href="#">Open your Saved Application</button>
+			<button class="button ui black" href="#">Call for Assistance</button>
+			<button class="button ui green" href="#" ui-sref='form.step5' ng-disabled="step4.$invalid">Next</button>
+	  </div>
+	  <!-- end button container -->
+	</form>
+	<!-- end form-->
+</div>
+<!-- end question -->

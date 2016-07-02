@@ -1,0 +1,349 @@
+{{searchData}}
+<div id="topForm">
+    <form ng-class="{loading: isLoading}" class="ui form" name="searchForm" novalidate>
+        <div class="ui equal width grid stackable">
+            <div class="column field">
+                <label>Loan Purpose</label>
+                <select ng-model="search.loanpurpose" name="loanpurpose" dropdown required>
+                    <option value="">Select Loan Purpose</option>
+                    <option value="0">Purchase</option>
+                    <option value="1">Refinance</option>
+                    <option value="2">Cash-out Refinance</option>
+                </select>
+            </div>
+            <!-- end col -->
+            <div class="column">
+                <div ng-if="search.loanpurpose == '0'" class="field">
+                    <label>Purchase Price</label>
+                    <input ng-model="search.appraisedValue" type="text" name="appraisedValue"
+                           placeholder="Purchase Price" currency required>
+                </div>
+                <div ng-if="search.loanpurpose != '0'" class="field">
+                    <label>Loan Amount</label>
+                    <input ng-model="search.loan_amount" type="text" name="loan_amount" placeholder="Loan Amount"
+                           currency required>
+                </div>
+            </div>
+            <!-- end col -->
+            <div class="column">
+                <div ng-if="search.loanpurpose == '0'" class="field">
+                    <label>Down Payment</label>
+                    <input ng-model="search.downPayment" type="text" name="downPayment" placeholder="Down Payment"
+                           currency required>
+                </div>
+                <div ng-if="search.loanpurpose != '0'" class="field">
+                    <label>Property Value</label>
+                    <input ng-model="search.appraisedValue" type="text" name="appraisedValue"
+                           placeholder="Property Value" currency required>
+                </div>
+            </div>
+            <!-- end col -->
+            <div class="column field">
+                <label>State</label>
+                <select ng-model="search.propertyState" name="propertyState" dropdown required>
+                    <option value="">Select State</option>
+                    <option value="CA">California</option>
+                    <option value="TX">Texas</option>
+                </select>
+            </div>
+            <!-- end col -->
+            <div class="column field">
+                <label>County</label>
+                <select ng-model="search.propertyCounty" name="propertyCounty" dropdown required>
+                    <option value="">Select County</option>
+                    <option ng-repeat="value in countyList track by $index">{{value}}</option>
+                </select>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+        <div class="ui equal width grid stackable">
+            <div class="column field">
+                <label>Credit Score</label>
+                <select ng-model="search.fico" name="fico" dropdown required>
+                    <option value="">Select Credit Score</option>
+                    <option value="800">800-850 Excellent+</option>
+                    <option value="780">780-799 Excellent</option>
+                    <option value="760">760-779 Very Good+</option>
+                    <option value="740">740-759 Very Good</option>
+                    <option value="720">720-739 Good+</option>
+                    <option value="700">700-719 Good</option>
+                    <option value="680">680-699 Decent+</option>
+                    <option value="660">660-679 Decent</option>
+                    <option value="640">640-659 Fair+</option>
+                    <option value="620">620-639 Fair</option>
+                </select>
+            </div>
+            <!-- end col -->
+            <div class="column field">
+                <label>Property Type</label>
+                <select ng-model="search.propertyType"  ng-init="search.propertyType=0"  name="propertyType" dropdown required>
+                    <option value="">Select Property Type</option>
+                    <option value="0">Single Family</option>
+                    <option value="3">Condominium</option>
+                    <option value="19">Townhome</option>
+                    <option value="20">2 Units</option>
+                    <option value="21">3 Units</option>
+                    <option value="22">4 Units</option>
+                    <option value="16">Planned Unit Development (PUD)</option>
+                </select>
+            </div>
+            <!-- end col -->
+            <div class="column field">
+                <label>Property Use</label>
+                <select ng-model="search.occupancy" ng-init="search.occupancy=0" name="occupancy" dropdown required>
+                    <option value="">Select Occupancy</option>
+                    <option value="0"> Primary Residence</option>
+                    <option value="1">Investment Property</option>
+                    <option value="2">Secondary Residence</option>
+                </select>
+            </div>
+            <!-- end col -->
+            <div class="column field">
+                <label for="">Select Rate Lock Days</label>
+                <select ng-model="search.lockindays" ng-init="search.lockindays=30" name="lockindays" dropdown required>
+                    <option value="">Select Rate Lock Days</option>
+                    <option value="15">15 Days</option>
+                    <option value="30">30 Days</option>
+                    <option value="45">45 Days</option>
+                    <option value="60">60 Days</option>
+                    <option value="90">90 Days</option>
+                </select>
+            </div>
+            <!-- end col -->
+            <div class="column field">
+                <label for="">Taxes &amp; Insurance</label>
+                <select ng-model="search.waiveescrow"  ng-init="search.waiveescrow=0"  name="waiveescrow" dropdown required>
+                    <option value="">Select Impounds</option>
+                    <option value="0">Pay Taxes Monthly</option>
+                    <option value="1">Pay Taxes separately</option>
+                </select>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </form>
+</div>
+<div id="topFormButton">
+    <button class="ui green button" ng-click="getQuotes()" ng-disabled="searchForm.$error.required || isLoading">
+        Submit
+    </button>
+</div>
+<!-- end top form-->
+
+<div ng-if="isLoading">
+    <h2>Loading...</h2>
+</div>
+
+<div ng-if="finished==true">
+    <h2 ng-if="!hasData">Search criteria provided no eligible products</h2>
+</div>
+
+<div ng-if="value.quotes.length > 1" ng-repeat="(key, value) in products | orderBy:'position'">
+    <table class="ui celled table main">
+        <tbody>
+        <tr>
+            <td>
+                <div class="ui equal width grid stackable">
+                    <div class="column">
+                        <h2>{{value.new_title}}</h2>
+                        <p class="rate-note">Loan Amount: {{formatMoney(search.loan_amount)}}</p>
+                    </div>
+                    <div class="column">
+                        <p class="rate-note">
+                            <strong>Rates as of {{date}}</strong> <br>
+                            Instant rate quotes data is provided in real-time and is subject to change without notice.
+                        </p>
+                    </div>
+                </div>
+                <table class="ui celled striped table dasktop">
+                    <thead>
+                    <tr>
+                        <th width="12%" class="center">Rate</th>
+                        <th width="12%" class="center">Points</th>
+                        <th width="12%" class="center">APR</th>
+                        <th width="12%" class="center">Payment</th>
+                        <th width="12%" class="center">Closing Costs</th>
+                        <th width="20%" class="center">Details</th>
+                        <th width="20%" class="center">Apply Now</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="quote in value.quotes">
+                        <td class="center">{{quote.rate[0]}}%</td>
+                        <td class="center">{{lessthanZero(quote.points[0])}}</td>
+                        <td class="center" ng-if="quote.total_costs>0">{{quote.apr[0]}}%</td>
+                        <td class="center" ng-if="quote.total_costs<0">{{quote.rate[0]}}%</td>
+                        <td class="right">{{formatMoney(quote.piti)}}</td>
+                        <td class="right">{{formatMoney(format(quote.total_costs))}}</td>
+                        <td class="center"><a href="#" target="#mod{{value.position}}-{{$index}}" modal>View Details</a>
+                            <div id="mod{{value.position}}-{{$index}}" class="ui modal printable">
+                                <i class="close icon"></i>
+                                <div class="header">
+                                    <div class="ui equal width grid stackable">
+                                        <div class="column" style="text-align:left;">
+                                            <a class="note" href="javascript:window.print();"><i class="print icon"></i>Print</a>
+                                        </div>
+                                        <div class="column" style="text-align:right;">
+                                            <span class="note">{{date}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="logo">
+                                        <img src="{{WP}}/assets/images/empire-web-logo-2.png" width="450" alt="">
+                                    </div>
+                                    <h2>Estimated Loan Fees</h2>
+                                    <p>{{$parent.value.new_title}} | Loan Amount: {{formatMoney(search.loan_amount)}} | Rate: {{quote.rate[0]}} | APR:
+                                        {{quote.apr[0]}} | Payment: {{formatMoney(quote.piti)}}</p>
+                                </div>
+                                <div class="content">
+                                    <table class="ui table">
+                                        <tbody>
+                                        <tr class="header">
+                                            <td>Lender Origination Charges</td>
+                                            <td class="right"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Guaranteed Lender Fee</td>
+                                            <td class="right">$ 1,949.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Credit or Charge for specific interest rate chosen</td>
+                                            <td class="right">{{formatMoney(quote.credit_irate)}}</td>
+                                        </tr>
+                                        <tr class="total">
+                                            <td>Total Origination Charges</td>
+                                            <td class="right">{{formatMoney(1949 + quote.credit_irate)}}</td>
+                                        </tr>
+                                        <tr class="header">
+                                            <td>Charges for all Other Settlement Services</td>
+                                            <td class="right"></td>
+                                        </tr>
+                                        <tr ng-repeat="(key, value) in value.closingCosts" ng-if="!hide(key, value)">
+                                            <td>
+                                                {{formatLabel(key)}}
+                                            </td>
+                                            <td class="right">
+                                                {{formatMoney(value)}}
+                                            </td>
+                                        </tr>
+                                        <tr class="total">
+                                            <td>Total Charges for all Other Settlement Services</td>
+                                            <td class="right">
+                                                {{formatMoney(value.closingCosts.total_closing_costs - 1949)}}
+                                            </td>
+                                        </tr>
+                                        <tr class="header">
+                                            <td>Impound and Interest Advances</td>
+                                            <td class="right"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Initial Deposit to establish your Escrow Account</td>
+                                            <td class="right">$0.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Daily Interest Charges until 1st day of Next Month</td>
+                                            <td class="right">$0.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total Impound and Interest Advances</td>
+                                            <td class="right">$0.00</td>
+                                        </tr>
+                                        <tr class="total">
+                                            <td>Total Estimated Settlement Charges</td>
+                                            <td class="right" ng-if="quote.total_costs>=0">
+                                                {{formatMoney(quote.total_costs)}} 
+                                            </td>
+                                            <td class="right" ng-if="quote.total_costs<0">
+                                                {{formatMoney(0)}}
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="ui equal width grid stackable">
+                                        <div class="column left">
+                                            <h2>Important Notices</h2>
+                                        </div>
+                                        <div class="column right">
+                                            <a href="#" ng-click="showMe()" ng-show="!showInfo">Click here to show
+                                                information</a>
+                                            <a href="#" ng-click="hideMe()" ng-show="showInfo">Click here to hide
+                                                information</a>
+                                        </div>
+                                    </div>
+                                    <div id="important-notice" ng-show="showInfo">
+                                        <ul>
+                                            <li>We Charge a Guaranteed Lender Fee which includes processing,
+                                                underwriting, credit report, doc prep, funding, tax service and flood
+                                                cert.
+                                            </li>
+                                            <li>We have negotiated a guaranteed appraisal fee and seven day turnaround
+                                                with certified residential appraisers in your county.
+                                            </li>
+                                            <li>Interest Due at Closing represents prepaid interest from the day you
+                                                close until the end of the month in which you close and is estimated at
+                                                15 days interest. The actual amount collected at closing will depend on
+                                                the day of the month your closes.
+                                            </li>
+                                            <li>Homeowner's Insurance Premium represents the premium for your first
+                                                year's homeowner's insurance policy to be collected and paid to the
+                                                insurance company through closing and is estimated at .25% of the
+                                                property value. You will select your insurance provider and the actual
+                                                amount collected at closing will be the first year's premium charged by
+                                                your insurance provider.
+                                            </li>
+                                            <li>Insurance Escrow/Impound Deposit represents the funds to be collected at
+                                                close to establish an account for the payment of your homeowner's
+                                                insurance renewal when it becomes due. The amount is estimated at .25%
+                                                of your property value, divided by 6. You will select your insurance
+                                                provider and the actual amount collected at closing will be 1/6 of your
+                                                annual premium.
+                                            </li>
+                                            <li>Property Tax Escrow/Impound Deposit represents the funds to be collected
+                                                at close to establish an account for the payment of your property taxes
+                                                when they become due. The amount collected at close will be the amount
+                                                necessary to ensure sufficient funds are in the account by the time your
+                                                property taxes are due, plus a two month cushion.
+                                            </li>
+                                            <li>On purchase transactions under contract, you may lock this rate and
+                                                guaranteed points and fees on-line, anytime 24/7. To do so, simply
+                                                Complete an Online application which takes about 20 minutes. Upon
+                                                Submission, you will be given an opportunity to lock your rate. You will
+                                                receive a Rate Lock Confirmation by email the same day, confirming the
+                                                rate, points and fees that have been locked in.
+                                            </li>
+                                            <li>On Purchase transaction not yet under contract, we encourage you to
+                                                Complete an Online Application and receive a Free Online Pre-Approval.
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end modal -->
+                        </td>
+                        <td class="center"><a href="{{WP_URL}}/apply-online/#/applyNow/">Apply Now</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="ui celled striped table mobile">
+
+                    <tbody ng-repeat="quote in value.quotes">
+                    <tr>
+                        <td class="left">Rate:</td>
+                        <td class="left">{{quote.rate[0]}}%</td>
+                        <td class="left">Points:</td>
+                        <td class="left">{{lessthanZero(quote.points[0])}}</td>
+                        <td class="left">APR:</td>
+                        <td class="left">{{quote.apr[0]}}%</td>
+                        <td class="left">Payment:</td>
+                        <td class="left">{{formatMoney(quote.piti)}}</td>
+                        <td class="left">Closing Costs</td>
+                        <td class="left">{{formatMoney(format(quote.total_costs))}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <!-- <a href="javascript:void(0);" ng-click="showMore(key)">Show more</a> -->
+</div>

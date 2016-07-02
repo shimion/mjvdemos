@@ -1,0 +1,21 @@
+@media print {
+    body * {
+        visibility:hidden;
+    }
+    .ui.modal.printable,
+    .ui.modal.printable * {
+        visibility:visible;
+    }
+    .ui.modal.printable { /* aligning the printable area */
+      position:absolute;
+      margin: 0px !important;
+      padding: 0px !important;
+      top: 0px !important;
+      left: 0px !important;
+      width: 760px !important;
+    }
+    .ui.modal.printable #important-notice{
+      display: block !important;
+    }
+}
+

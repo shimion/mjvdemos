@@ -1,0 +1,37 @@
+/*
+Theme Name: Empire America v4
+Icon:
+Theme URI:
+Description:
+Author: eRC
+Version:
+Tags:
+*/
+@media print {
+    body * {
+        visibility:hidden;
+    }
+    .ui.modal.printable,
+    .ui.modal.printable * {
+        visibility:visible;
+    }
+    .ui.modal.printable { /* aligning the printable area */
+        position: absolute !important;
+        margin: 0px !important;
+        padding: 0px !important;
+        top: 0px !important;
+        left: 0px !important;
+         height: 800px !important;
+        width: 100%;
+        background: yellow;
+        margin: 0px !important;
+        overflow: hidden;
+    }
+    .ui.modal.printable #important-notice{
+        display: block !important;
+    }
+    .modals.dimmer .ui.scrolling.modal {
+        position: static !important;
+        margin: 0 !important;
+    }
+}

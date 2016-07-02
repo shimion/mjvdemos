@@ -1,0 +1,126 @@
+<div class="question">
+	<h2 class="ui horizontal divider header">Current Address Information</h2>
+	<form action="" class="ui form" name="step2">
+		<div class="inline fields">
+			<div class="four wide field">
+				<label>Street Address</label>
+			</div>
+	    <div class="twelve wide field">
+	      <input type="text" ng-model="apply.curr_add" placeholder="Street Address" required>
+	    </div>
+	  </div>
+	  <!-- inline fields -->
+	  <div class="inline fields">
+			<div class="four wide field">
+				<label>City</label>
+			</div>
+	    <div class="twelve wide field">
+				<input type="text" ng-model="apply.curr_city" required>
+	    </div>
+	  </div>
+	  <!-- inline fields -->
+	  <div class="inline fields">
+			<div class="four wide field">
+				<label>State</label>
+			</div>
+	    <div class="twelve wide field">
+				<select ng-model="apply.curr_state" ng-options="states.value as states.state for states in stateList" dropdown required>
+						<option selected value="">Select State</option>
+					</select>
+	    </div>
+	  </div>
+	  <!-- inline fields -->
+	  <div class="inline fields">
+			<div class="four wide field">
+				<label>Zip Code:</label>
+			</div>
+	    <div class="twelve wide field">
+				<input type="number" ng-model="apply.curr_zip" required>
+	    </div>
+	  </div>
+	  <!-- inline fields -->
+	  <div class="fields">
+	    <div class="sixteen wide field">
+				<h3><label>How many years have you owned/rented this property ?</label></h3>
+				<select ng-model="apply.curr_years_prop" ng-options="years.value as years.years for years in yearList" dropdown required>
+					<option selected value="">Select Option</option>
+				</select>
+	    </div>
+	  </div>
+	  <!-- inline fields -->
+	   <div class="fields">
+	    <div class="sixteen wide field">
+				<h3><label>Is this the property being refinanced ?</label></h3>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.refinance" value="Yes" ng-required="!apply.refinance">
+	        <label>Yes</label>
+	      </div>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.refinance" value="No" ng-required="!apply.refinance">
+	        <label>No</label>
+	      </div>
+	    </div>
+	  </div>
+	  <!-- inline fields -->
+	  <div ng-if="apply.curr_years_prop == '1'">
+	  	<h2 class="ui horizontal divider header">
+			  Previous Address Information
+			</h2>
+	  	<div class="inline fields">
+				<div class="four wide field">
+					<label>Street Address</label>
+				</div>
+		    <div class="twelve wide field">
+		      <input type="text" ng-model="apply.prev_add" placeholder="Street Address" required>
+		    </div>
+		  </div>
+		  <!-- inline fields -->
+		  <div class="inline fields">
+				<div class="four wide field">
+					<label>City</label>
+				</div>
+		    <div class="twelve wide field">
+					<input type="text" ng-model="apply.prev_city" required>
+		    </div>
+		  </div>
+		  <!-- inline fields -->
+		  <div class="inline fields">
+				<div class="four wide field">
+					<label>State</label>
+				</div>
+		    <div class="twelve wide field">
+					<select ng-model="apply.prev_state" ng-options="states.value as states.state for states in stateList" dropdown required>
+							<option selected value="">Select State</option>
+						</select>
+		    </div>
+		  </div>
+		  <!-- inline fields -->
+		  <div class="inline fields">
+				<div class="four wide field">
+					<label>Zip Code:</label>
+				</div>
+		    <div class="twelve wide field">
+					<input type="number" ng-model="apply.prev_zip" required>
+		    </div>
+		  </div>
+		  <!-- inline fields -->
+		  <div class="fields">
+		    <div class="sixteen wide field">
+					<h3><label>How many years did you own/rent this property ?</label></h3>
+					<select ng-model="apply.prev_years_prop"  ng-options="years.value as years.years for years in yearList" dropdown required>
+							<option selected value="">Select Option</option>
+					</select>
+		    </div>
+		  </div>
+		  <!-- inline fields -->
+	  </div>
+	  <!-- end logic -->
+	  <div class="button-container">
+			<button class="ui button black" href="#">Open your Saved Application</button>
+			<button class="ui button black" href="#">Call for Assistance</button>
+			<button class="ui button green" href="#" ui-sref='form.step3' ng-disabled="step2.$invalid">Next</button>
+		</div>
+		<!-- buttons -->
+	</form>
+</div>
+<!-- end question -->

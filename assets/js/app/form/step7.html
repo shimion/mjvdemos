@@ -1,0 +1,96 @@
+<div class="question">
+	<h2 class="ui horizontal divider header">Additional Information</h2>
+	<form class="ui form" action="" name="step7">
+		<div class="inline field">
+	    <div class="ui toggle checkbox">
+	      <input type="checkbox" ng-model="apply.provide">
+	      <label>I do not wish to furnish this information</label>
+	    </div>
+	  </div>
+	  <!-- end field -->
+	  <div ng-if="!apply.provide">
+			<div class="fields">
+		    <div class="sixteen wide field">
+					<label>Gender</label>
+		      <div class="ui radio checkbox">
+		        <input type="radio" name="Gender" ng-model="apply.male" value="male" ng-required="!(apply.male || apply.female)">
+		        <label>Male</label>
+		      </div>
+		      <div class="ui radio checkbox">
+		        <input type="radio" name="Gender" ng-model="apply.female" value="female" ng-required="!(apply.male || apply.female)">
+		        <label>Female</label>
+		      </div>
+		    </div>
+		    <!-- end field -->
+		  </div>
+		  <!-- inline fields -->
+		  <div class="fields">
+		    <div class="sixteen wide field">
+					<label>Ethnicity</label>
+		      <div class="ui radio checkbox">
+		        <input type="radio" name="Ethnicity" ng-model="apply.hispanic" value="selected" ng-required="!(apply.no_his || apply.hispanic)">
+		        <label>Hispanic or Latino</label>
+		      </div>
+		      <div class="ui radio checkbox">
+		        <input type="radio" name="Ethnicity" ng-model="apply.no_his" value="selected" ng-required="!(apply.no_his || apply.hispanic)">
+		        <label>Not Hispanic or Latino</label>
+		      </div>
+		    </div>
+		    <!-- end field -->
+		  </div>
+		  <!-- inline fields -->
+		  <div class="grouped fields">
+		    <div class="field">
+					<label>Race</label>
+					<div class="ui radio checkbox" >
+		        <input type="radio" name="Race" ng-model="apply.indian" value="selected" ng-required="!(apply.indian || apply.hawai || apply.asian || apply.white || apply.black)">
+		        <label>American Indian or Alaska Native</label>
+		      </div>
+		    </div>
+		    <!-- end field -->
+		    <div class="field">
+		      <div class="ui radio checkbox" >
+		        <input type="radio" name="Race" ng-model="apply.hawai" value="selected" ng-required="!(apply.indian || apply.hawai || apply.asian || apply.white || apply.black)">
+		        <label>Native Hawaiian or Other Pacific Islander</label>
+		      </div>
+		    </div>
+		    <!-- end field -->
+		    <div class="field">
+		      <div class="ui radio checkbox" >
+		        <input type="radio" name="Race" ng-model="apply.asian" value="selected" ng-required="!(apply.indian || apply.hawai || apply.asian || apply.white || apply.black)">
+		        <label>Asian</label>
+		      </div>
+		    </div>
+		    <!-- end field -->
+		    <div class="field">
+		      <div class="ui radio checkbox" >
+		        <input type="radio" name="Race" ng-model="apply.white" value="selected" ng-required="!(apply.indian || apply.hawai || apply.asian || apply.white || apply.black)">
+		        <label>White</label>
+		      </div>
+		    </div>
+		    <!-- end field -->
+		    <div class="field">
+		      <div class="ui radio checkbox" >
+		        <input type="radio" name="Race" ng-model="apply.black" value="selected" ng-required="!(apply.indian || apply.hawai || apply.asian || apply.white || apply.black)">
+		        <label>Black or African American</label>
+		      </div>
+		    </div>
+		    <!-- end field -->
+		  </div>
+		  <!-- inline fields -->
+		  <div class="field">
+	      <label>Comments</label>
+	      <textarea ng-model="apply.comments"></textarea>
+	    </div>
+	    <!-- end field -->
+	  </div>
+	  <!-- end conditional -->
+	  <div class="button-container">
+	  	<button class="button ui black" href="#">Open your Saved Application</button>
+			<button class="button ui black" href="#">Call for Assistance</button>
+			<button class="button ui green" href="#" ui-sref='form.finish' ng-click="submitForm()" ng-disabled="step7.$invalid">Next</button>
+	  </div>
+	</form>
+	<!-- end form -->
+</div>
+<!-- end question -->

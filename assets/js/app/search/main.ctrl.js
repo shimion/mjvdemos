@@ -1,0 +1,487 @@
+'use strict';
+
+angular.module('quoteSearch')
+    .controller
+    ('searchCtrl',
+        ['$scope', '$http', 'API_CONFIG', '$timeout', '$interval',
+            function ($scope, $http, API_CONFIG, $timeout, $interval) {
+                $scope.search = {};
+                $scope.countyList = [];
+                $scope.checkAll = [];
+                $scope.currentTime = '';
+                $scope.showInfo = false;
+                $scope.finished = false;
+                $scope.lodecustomdata = false;
+                $scope.checkDataCounter = 0;
+                $scope.WP = API_CONFIG.WP_URL;
+                $scope.WP_URL = API_CONFIG.WP_SITE_URL;
+                $scope.loanProducts = [];
+                $scope.countyCA = ["Alameda", "Alpine", "Amador", "Butte", "Calaveras", "Colusa", "Contra Costa", "Del Norte", "El Dorado", "Fresno", "Glenn", "Humboldt", "Imperial", "Inyo", "Kern", "Kings", "Lake", "Lassen", "Los Angeles", "Madera", "Marin", "Mariposa", "Mendocino", "Merced", "Modoc", "Mono", "Monterey", "Napa", "Nevada", "Orange", "Placer", "Plumas", "Riverside", "Sacramento", "San Benito", "San Bernardino", "San Diego", "San Francisco", "San Joaquin", "San Luis Obispo", "San Mateo", "Santa Barbara", "Santa Clara", "Santa Cruz", "Shasta", "Sierra", "Siskiyou", "Solano", "Sonoma", "Stanislaus", "Sutter", "Tehama", "Trinity", "Tulare", "Tuolumne", "Ventura", "Yolo", "Yuba"];
+                $scope.countyTX = ["Anderson", "Andrews", "Angelina", "Aransas", "Austin", "Bandera", "Bell", "Bexar", "Bexar", "Bosque", "Brazoria", "Brazos", "Calhoun", "Cameron", "Chambers", "Clay", "Collin", "Colorado", "Comal", "Cooke", "Dallam", "Dallas", "Denton", "Eastland", "Ector", "El Paso", "Ellis", "Fayette", "Fort Bend", "Galveston", "Garza", "Grayson", "Gregg", "Guadalupe", "Harris", "Harrison", "Hays", "Hidalgo", "Hood", "Hopkins", "Hunt", "Jefferson", "Johnson", "Kaufman", "Kendall", "Kerr", "La Salle", "Lamar", "Liberty", "Lubbock", "Matagorda", "Maverick", "McLennan", "Midland", "Nacogdoches", "Nueces", "Orange", "Panola", "Parker", "Pecos", "Potter", "Randall", "Rockwall", "Rusk", "San Jacinto", "San Saba", "Smith", "Somervell", "Tarrant", "Taylor", "Titus", "Tom Green", "Travis", "Upshur", "Uvalde", "Victoria", "Walker", "Waller", "Washington", "Wichita", "Wilbarger", "Williamson", "Winkler", "Wise"];
+
+                var getParameterByName = function (name) {
+                    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+                    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                        results = regex.exec(location.search);
+                    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+                }
+
+                //loanpurpose=0&purchasePrice=250000&downPayment=25000&loanAmount=&propertyValue=&propertyState=TX&propertyCounty=Anderson&fico=760&propertyType=0&occupancy=0&waiveescrow=0
+                //loanpurpose=1&purchasePrice=&downPayment=&loanAmount=25000&propertyValue=750000&propertyState=TX&propertyCounty=Anderson&fico=760&propertyType=0&occupancy=0&waiveescrow=0
+
+                if (getParameterByName('loanpurpose').length > 0) {
+                    $scope.search.loanpurpose = getParameterByName('loanpurpose');
+                    $scope.search.loan_amount = ($scope.search.loanpurpose == '1') ? getParameterByName('loanAmount') : '';
+                    $scope.search.appraisedValue = ($scope.search.loanpurpose == '0') ? getParameterByName('purchasePrice') : getParameterByName('propertyValue');
+                    $scope.search.downPayment = ($scope.search.loanpurpose == '0') ? getParameterByName('downPayment') : '';
+                    $scope.search.propertyState = getParameterByName('propertyState');
+                    $scope.search.propertyCounty = getParameterByName('propertyCounty');
+                    $scope.search.fico = getParameterByName('fico');
+                    $scope.search.propertyType = getParameterByName('propertyType');
+                    $scope.search.occupancy = getParameterByName('occupancy');
+                    $scope.search.waiveescrow = getParameterByName('waiveescrow');
+
+                    $timeout(function () {
+                        $scope.getQuotes();
+                    }, 2000);
+
+                }
+
+                //Listener
+                $scope.$watch('search.propertyState', function (newVal, oldVal) {
+                    $scope.countyList = (newVal == 'CA') ? $scope.countyCA : $scope.countyTX;
+                });
+
+                $scope.showMe = function () {
+                    $scope.showInfo = true;
+                }
+
+                $scope.replaceTitle = function (title) {
+
+                    switch (title) {
+                        case 1663: 
+                            return "Agency FHLMC Jumbo 10 Yr Fixed";
+                            break;
+                        case 1314:
+                            return "Agency FHLMC Jumbo 15 Yr Fixed";
+                            break;
+                        case 1313:
+                            return "Agency FHLMC Jumbo 20 Yr Fixed";
+                            break;
+                        case 2407:
+                            return "Agency FHLMC Jumbo 25 Yr Fixed";
+                            break;
+                        case 1311:
+                            return "Agency FHLMC Jumbo 30 Yr Fixed";
+                            break;
+                        case 2400:
+                            return "Agency FHLMC Jumbo 30 Yr LIBOR ARM 5/1";
+                            break;
+                        case 1327:
+                            return "Agency FHLMC Jumbo 30 Yr LIBOR ARM 7/1";
+                            break;
+                        case 1662:
+                            return "Super Conforming 10 Year Fixed";
+                            break;
+                        case 1308:
+                            return "Super Conforming 15 Year Fixed";
+                            break;
+                        case 1681:
+                            return "Super Conforming 20 Year Fixed";
+                            break;
+                        case 2406:
+                            return "Agency FNMA Jumbo 25 Yr Fixed";
+                            break;
+                        case 1307:
+                            return "Super Conforming 30 Year Fixed";
+                            break;
+                        case 1324:
+                            return "Super Conforming 10/1 Arm";
+                            break;
+                        case 1807:
+                            return "Agency FNMA Jumbo 30 Yr LIBOR ARM 3/1";
+                            break;
+                        case 1309:
+                            return "Super Conforming 5/1 Arm";
+                            break;
+                        case 1323:
+                            return "Super Conforming 7/1 Arm";
+                            break;
+                        case 1:
+                            return "Conforming 10 Year Fixed";
+                            break;
+                        case 2:
+                            return "Conforming 15 Year Fixed";
+                            break;
+                        case 3:
+                            return "Conforming 20 Year Fixed";
+                            break;
+                        case 40:
+                            return "Conforming 25 Year Fixed";
+                            break;
+                        case 4:
+                            return "Conforming 30 Year Fixed";
+                            break;
+                        case 135:
+                            return "Conforming 10/1 Arm";
+                            break;
+                        case 132:
+                            return "Conf 30 Yr LIBOR ARM 3/1";
+                            break;
+                        case 1035:
+                            return "Conforming 5/1 Arm";
+                            break;
+                        case 134:
+                            return "Conforming 7/1 Arm";
+                            break;
+                        case 1349:
+                            return "FHLMC 10 Yr Fixed";
+                            break;
+                        case 1350:
+                            return "FHLMC 15 Yr Fixed";
+                            break;
+                        case 1351:
+                            return "FHLMC 20 Yr Fixed";
+                            break;
+                        case 1352:
+                            return "FHLMC 25 Yr Fixed";
+                            break;
+                        case 1353:
+                            return "FHLMC 30 Yr Fixed";
+                            break;
+                        case 1373:
+                            return "FHLMC 30 Yr LIBOR ARM 10/1";
+                            break;
+                        case 1368:
+                            return "FHLMC 30 Yr LIBOR ARM 3/1";
+                            break;
+                        case 1369:
+                            return "FHLMC 30 Yr LIBOR ARM 5/1";
+                            break;
+                        case 1372:
+                            return "FHLMC 30 Yr LIBOR ARM 7/1";
+                            break;
+                        case 13:
+                            return "Jumbo 15 Year Fixed";
+                            break;
+                        case 15:
+                            return "Jumbo 30 Year Fixed";
+                            break;
+                        case 141:
+                            return "Jumbo 10/1 Arm";
+                            break;
+                        case 1038:
+                            return "Jumbo 5/1 Arm";
+                            break;
+                        case 140:
+                            return "Jumbo 7/1 Arm";
+                            break;
+                        case 69:
+                            return "Portfolio 15 Yr Fixed";
+                            break;
+                        case 46:
+                            return "Portfolio 30 Yr Fixed";
+                            break;
+                        case 720:
+                            return "Portfolio 30 Yr LIBOR ARM 10/1";
+                            break;
+                        case 718:
+                            return "Portfolio 30 Yr LIBOR ARM 5/1";
+                            break;
+                        case 719:
+                            return "Portfolio 30 Yr LIBOR ARM 7/1";
+                            break;
+                        case 2048:
+                            return "Portfolio SISA (Low Doc) 30 Yr LIBOR ARM 5/1";
+                            break;
+
+                        default:
+                            return "undefined product";
+                            break;
+                    }
+                }
+
+                $scope.formatLabel = function (string) {
+                    if (string == 'courier') {
+                        return 'Courier';
+                    } else if (string == 'single_family' || string == 'condominium' || string == 'townhouse' || string == 'two_units' || string == 'three_units' || string == 'four_units' || string == 'pud') {
+                        return 'Appraisal Fee';
+                    } else if (string == 'lender_insurance') {
+                        return "Lender's Title Insurance";
+                    } else if (string == 'premium') {
+                        return 'Premium';
+                    } else if (string == 'notary') {
+                        return 'Notary';
+                    } else if (string == 'endorsement') {
+                        return 'Title Endorsement';
+                    } else if (string == 'escrow_fee') {
+                        return 'Escrow';
+                    } else if (string == 'lender_title_insurance') {
+                        return 'Lender Title Insurance';
+                    } else if (string == 'tax_cert') {
+                        return 'Tax Cert';
+                    } else if (string == 'recording') {
+                        return 'Recording';
+                    } else if (string == 'settlement') {
+                        return 'Settlement';
+                    } else {
+                        return string;
+                    }
+                };
+                $scope.formatMoney = function (number) {
+                    var number = Math.ceil(parseFloat(number));
+
+                    if (number < 0) {
+                        number = Math.abs(number);
+                        return '- $ ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '.00';
+                    } else {
+                        return '$ ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '.00';
+                    }
+                };
+                $scope.hide = function (key, value) {
+                    if (value > 0) {
+                        if (key == 'origination_fee' || key == 'total_closing_costs' || key == 'lender_origination_fee') {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return true;
+                    }
+                };
+                $scope.showMore = function (index) {
+                    $scope.checkAll[index] = !$scope.checkAll[index];
+                };
+                $scope.lessthanZero = function (number) {
+                    number = (number < 0) ? 0.00 : parseFloat(number);
+                    return number.toFixed(3);
+                };
+                $scope.format = function (number) {
+                    var number = $scope.lessthanZero(number);
+                    return Math.ceil(number);
+                };
+                $scope.checkData = function () {
+                    $scope.hasData = false;
+                    $scope.finished = false;
+
+                    $scope.checkDataCounter = +1;
+
+                    if ($scope.loanProducts.length == $scope.checkDataCounter) {
+
+                        $scope.finished = true;
+
+                        if (_.findWhere($scope.products, {hasData: true})) {
+                            $scope.hasData = true;
+                        }
+                    }
+
+                    // angular.forEach($scope.products, function (value, key) {
+                    //     if (value.hasData == true) {
+                    //         $scope.hasData = true;
+                    //     }
+                    // });
+
+                    /*var check_not_empty =  [];
+                     if($scope.products){
+                     check_not_empty.push($scope.products)
+                     }
+
+                     alert("No value available");
+                     if (check_not_empty.length === 0) {
+                     alert("No value available");
+                     }else{
+                     $scope.hasData = true;
+                     }*/
+
+
+                    //$interval($scope.hasData = true, 30000);
+
+                }
+                ;
+
+
+                $scope.getQuote = function (loanProduct) {
+
+                    $scope.isLoading = true;
+                    $scope.state = "LOADING";
+                    var search = $scope.search;
+
+                    //remove commas and $ from pricing
+                    search.appraisedValue = search.appraisedValue.replace(/[^0-9\.]+/g, "");
+                    search.loan_amount = ($scope.search.loan_amount != undefined ) ? $scope.search.loan_amount.replace(/[^0-9\.]+/g, "") : undefined;
+                    search.downPayment = (search.downPayment != undefined ) ? search.downPayment.replace(/[^0-9\.]+/g, "") : undefined;
+
+                    search.loanProduct = loanProduct;
+                    search.loan_amount = ($scope.search.loanpurpose == '0') ? parseInt($scope.search.appraisedValue) - parseInt($scope.search.downPayment) : $scope.search.loan_amount;
+                    search.loan_amount = $scope.search.loan_amount.toString();
+
+                    var req =
+                    {
+                        method: 'POST',
+                        url: API_CONFIG.WP_URL + 'libraries/results.php',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        data: search
+                    };
+
+                    $http(req).success(function (data) {
+                            /**
+                             * adding positioning data. There are others way to do it but it will require more
+                             * code changes.
+                             * $scope.loanProducts = [4, 40, 3, 2, 1, 1035, 134, 135, 1307, 1681, 1308, 1662, 1309, 1323, 1324, 15, 13, 1038, 140, 141];
+                             */
+                            if (data.product == 4) {
+                                data.position = 1;
+                            }
+                            else if (data.product == 40) {
+                                data.position = 2;
+                            }
+                            else if (data.product == 3) {
+                                data.position = 3;
+                            }
+                            else if (data.product == 2) {
+                                data.position = 4;
+                            }
+                            else if (data.product == 1) {
+                                data.position = 5;
+                            }
+                            //Conforming 5/1 Arm
+                            else if (data.product == 1035) {
+                                data.position = 6;
+                            }
+                            //Conforming 7/1 Arm
+                            else if (data.product == 134) {
+                                data.position = 7;
+                            }
+                            //Conforming 10/1 Arm
+                            else if (data.product == 135) {
+                                data.position = 8;
+                            }
+                            // Super Conforming 5/1 Arm
+                            else if (data.product == 1309) {
+                                data.position = 14;
+                            }
+                            //Super Conforming 7/1 Arm
+                            else if (data.product == 1323) {
+                                data.position = 15;
+                            }
+                            //Super Conforming 10/1 Arm
+                            else if (data.product == 1324) {
+                                data.position = 16;
+                            }
+                            //Super Conforming 10 Year Fixed
+                            else if (data.product == 1662) {
+                                data.position = 13;
+                            }
+                            //Super Conforming 15 Year Fixed
+                            else if (data.product == 1308) {
+                                data.position = 12;
+                            }
+                            //Super Conforming 20 Year Fixed
+                            else if (data.product == 1681) {
+                                data.position = 11;
+                            }
+                            //Super Conforming 30 Year Fixed
+                            else if (data.product == 1307) {
+                                data.position = 10;
+                            }
+                            //Jumbo 30 Year Fixed
+                            else if (data.product == 15) {
+                                data.position = 17;
+                            }
+                            //Jumbo 15 Year Fixed
+                            else if (data.product == 13) {
+                                data.position = 18;
+                            }
+                            //Jumbo 5/1 Arm
+                            else if (data.product == 1038) {
+                                data.position = 19;
+                            }
+                            //Jumbo 7/1 Arm
+                            else if (data.product == 140) {
+                                data.position = 20;
+                            }
+                            //Jumbo 10/1 Arm
+                            else if (data.product == 141) {
+                                data.position = 21;
+                            }
+
+                            if (data.product) {
+                                data.new_title = $scope.replaceTitle(data.product);
+                            }
+
+                            $scope.products.push(data);
+                            $scope.isLoading = false;
+                            $scope.checkData();
+                        }
+                    )
+                };
+
+                $scope.getQuotes = function () {
+                    var date = new Date();
+                    var n = date.toDateString();
+                    var n = n.substring(0, 10) + ', ' + n.substring(10);
+                    var time = date.toLocaleTimeString();
+                    var split = date.toString().split(" ");
+                    var timeZoneFormatted = split[split.length - 2] + " " + split[split.length - 1];
+
+                    $scope.products = [];
+                    $scope.date = n + ' ' + time + ' ' + timeZoneFormatted;
+                    var count = 0;
+
+                    var search = $scope.search;
+
+                    var loan_amount = ($scope.search.loan_amount != undefined ) ? $scope.search.loan_amount.replace(/[^0-9\.]+/g, "") : undefined;
+                    var downPayment = (search.downPayment != undefined ) ? search.downPayment.replace(/[^0-9\.]+/g, "") : undefined;
+                    var appraisedValue = search.appraisedValue.replace(/[^0-9\.]+/g, "");
+
+                    loan_amount = ($scope.search.loanpurpose == '0') ? parseInt(appraisedValue) - parseInt(downPayment) : loan_amount;
+
+
+                    $scope.loanProducts = [4, 40, 3, 2, 1, 1035, 134, 135, 1307, 1681, 1308, 1662, 1309, 1323, 1324, 15, 13, 1038, 140, 141];
+
+                    ///**
+                    // * Agency Conforming Loan Amounts >75,000 to 417,000
+                    // */
+                    //if (loan_amount > 75000 && loan_amount <= 417000) {
+                    //    $scope.loanProducts = [3, 2, 1, 1035, 134, 40, 135, 4];
+                    //}
+                    ///**
+                    // * Agency Jumbo Loan Amounts >417,000 to 625,000 (determined by county)
+                    // */
+                    //else if (loan_amount > 417000) {
+                    //
+                    //    if (loan_amount <= 625000) {
+                    //        $scope.loanProducts = [1307, 1681, 1308, 1662, 1309, 1323, 1324, 15, 13, 1038, 140, 141];
+                    //    }
+                    //    else if (loan_amount > 625000 && loan_amount <= 5000000) {
+                    //        $scope.loanProducts = [1307, 1681, 1308, 1662, 1309, 1323, 1324];
+                    //    }
+                    //}
+                    //else {
+                    //    $scope.loanProducts = [1663, 1314, 1313, 2407, 1311, 2400, 1327, 1662, 1308, 1681, 2406,
+                    //        1307, 1324, 1807, 1309, 1323, 1, 2, 3, 40, 4, 135, 132, 1037, 1035, 134, 1349, 1350,
+                    //        1351, 1352, 1353, 1373, 368, 1369, 1372, 13, 15, 141, 1038, 140, 69, 46, 720, 718, 719,
+                    //        2048];
+                    //}
+
+                    //console.log($scope.loanProducts);
+
+                    angular.forEach($scope.loanProducts, function (loan, index) {
+
+                        if (count == 0) {
+                            $scope.getQuote(loan);
+                            count++;
+                        } else {
+                            $timeout(function () {
+                                $scope.getQuote(loan);
+                            }, 2000);
+
+                        }
+                    });
+                };
+
+            }
+        ]
+    )

@@ -1,0 +1,67 @@
+<div class="question">
+	<h2 class="ui horizontal divider header">Subject Property</h2>
+	<form class="ui form" action="" name="step3">
+		<div class="inline fields">
+			<div class="four wide field">
+				<label>Street Address:</label>
+			</div>
+	    <div class="twelve wide field">
+	      <input type="text" ng-model="apply.sub_add" placeholder="Street Address" required>
+	    </div>
+	  </div>
+	  <!-- inline fields -->
+	  <div class="inline fields">
+			<div class="four wide field">
+				<label>City:</label>
+			</div>
+	    <div class="twelve wide field">
+				<input type="text" ng-model="apply.sub_city" required>
+	    </div>
+	  </div>
+	  <!-- inline fields -->
+	  <div class="inline fields">
+			<div class="four wide field">
+				<label>State:</label>
+			</div>
+	    <div class="twelve wide field">
+				<select ng-model="apply.sub_state" ng-options="states.value as states.state for states in stateList" dropdown required>
+					<option selected value="">Select State</option>
+				</select>
+	    </div>
+	  </div>
+	  <!-- inline fields -->
+	  <div class="inline fields">
+			<div class="four wide field">
+				<label>Zip Code:</label>
+			</div>
+	    <div class="twelve wide field">
+				<input type="text" ng-model="apply.sub_zip" placeholder="Zip Code" required>
+	    </div>
+	  </div>
+	  <!-- inline fields -->
+	  <div class="inline fields">
+			<div class="four wide field">
+				<label>Home Estimated Value:</label>
+			</div>
+	    <div class="twelve wide field">
+				<input type="text" ng-model="apply.purchase_value" placeholder="Estimated Value" required>
+	    </div>
+	  </div>
+	  <!-- inline fields -->
+	  <div class="inline fields">
+			<div class="four wide field">
+				<label>Loan Amount for Refinance:</label>
+			</div>
+	    <div class="twelve wide field">
+				<input type="text" ng-model="apply.purchase_loan" placeholder="Amount for Refinance" required>
+	    </div>
+	  </div>
+	  <!-- inline fields -->
+	  <div class="button-container">
+	  		<button class="button ui black" href="#">Open your Saved Application</button>
+			<button class="button ui black" href="#">Call for Assistance</button>
+			<button class="button ui green" href="#" ui-sref='form.step4' ng-disabled="step3.$invalid">Next</button>
+	  </div>
+	</form>
+</div>
+<!-- end question -->

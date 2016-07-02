@@ -1,0 +1,87 @@
+<div class="question">
+	<h2 class="ui horizontal divider header">Declarations</h2>
+	<form class="ui form" action="" name="step6">
+		<div class="fields">
+	    <div class="sixteen wide field">
+				<label>Are you a co-maker or endorser on a note?</label>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.endorser" value="Yes" ng-required="!apply.endorser">
+	        <label>Yes</label>
+	      </div>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.endorser" value="No" ng-required="!apply.endorser">
+	        <label>No</label>
+	      </div>
+	    </div>
+	    <!-- end field -->
+	  </div>
+	  <!-- inline fields -->
+	  <div class="fields">
+	    <div class="sixteen wide field">
+				<label>Are you a U.S. citizen?</label>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.uscitizen" value="Yes" ng-required="!apply.uscitizen">
+	        <label>Yes</label>
+	      </div>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.uscitizen" value="No" ng-required="!apply.uscitizen">
+	        <label>No</label>
+	      </div>
+	    </div>
+	    <!-- end field -->
+	  </div>
+	  <!-- inline fields -->
+	  <div class="fields">
+	    <div class="sixteen wide field">
+				<label>Are you a permanent resident alien?</label>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.alien" value="Yes" ng-required="!apply.alien">
+	        <label>Yes</label>
+	      </div>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.alien" value="No" ng-required="!apply.alien">
+	        <label>No</label>
+	      </div>
+	    </div>
+	    <!-- end field -->
+	  </div>
+	  <!-- inline fields -->
+	  <div class="fields">
+	    <div class="sixteen wide field">
+				<label>Do you intend to occupy the property as your primary residence?</label>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.primary_res" value="Yes" ng-required="!apply.primary_res">
+	        <label>Yes</label>
+	      </div>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.primary_res" value="No" ng-required="!apply.primary_res">
+	        <label>No</label>
+	      </div>
+	    </div>
+	    <!-- end field -->
+	  </div>
+	  <!-- inline fields -->
+	   <div class="fields">
+	    <div class="sixteen wide field">
+				<label>Have you had an ownership interest in a property in the last three years?</label>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.owner3y" value="Yes" ng-required="!apply.owner3y">
+	        <label>Yes</label>
+	      </div>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.owner3y" value="No" ng-required="!apply.owner3y">
+	        <label>No</label>
+	      </div>
+	    </div>
+	    <!-- end field -->
+	  </div>
+	  <!-- inline fields -->
+	  <div class="button-container">
+	  	<button class="button ui black" href="#">Open your Saved Application</button>
+			<button class="button ui black" href="#">Call for Assistance</button>
+			<button class="button ui green" href="#" ui-sref='form.step7' ng-disabled="step6.$invalid">Next</button>
+	  </div>
+	</form>
+	<!--- end ui form -->
+</div>
+<!-- end question -->

@@ -1,0 +1,56 @@
+<div class="container">
+	<div class="col-md-9">
+		<form action="">
+			<div class="step">
+				<div class="header">
+						<span>Getting Started</span>
+				</div>
+				<div class="row">
+					<label>First Name:</label>
+					<input type="text" ng-model="apply.fname">
+				</div>
+				<!-- end row -->
+				<div class="row">
+					<label>Last Name:</label>
+					<input type="text" ng-model="apply.lname">
+				</div>
+				<!-- end row -->
+				<div class="row">
+					<label>Home Phone Number</label>
+					<input type="text" ng-model="apply.home">
+				</div>
+				<!-- end row -->
+				<div class="row">
+					<label>Cell Phone Number</label>
+					<input type="text" ng-model="apply.cell">
+				</div>
+				<!-- end row -->
+				<div class="row">
+					<label>Business Phone Number</label>
+					<input type="text" ng-model="apply.work">
+				</div>
+				<!-- end row -->
+				<div class="row">
+					<label>Email</label>
+					<input type="text" ng-model="apply.email">
+				</div>
+				<!-- end row -->
+				<span class="formQ">
+					Do you want to finance the purchase of a home or refinance an existing loan ?
+				</span>
+				<div class="row">
+					<label><input type="radio" name="type" ng-model="validation.type" value="refinance">Refinance</label>
+					<label><input type="radio" name="type" ng-model="validation.type" value="purchase">Purchase</label>
+				</div>
+				<!-- end row -->
+			</div>
+			<div class="button">
+				<a class="btn black" href="#">Open your Saved Application</a>
+				<a class="btn black" href="#">Call for Assistance</a>
+				<a class="btn green" href="#">Next</a>
+			</div>
+			<!-- buttons -->
+		</form>
+	</div>
+	<!-- end form -->
+</div>

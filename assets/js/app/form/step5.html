@@ -1,0 +1,116 @@
+<div class="question">
+	<h2 class="ui horizontal divider header">Declarations</h2>
+	<form class="ui form" action="" name="step5">
+		<div class="fields">
+	    <div class="sixteen wide field">
+	    	<label>Are there any outstanding judgments against you ?</label>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.judgment" value="Yes" ng-required="!apply.judgment">
+	        <label>Yes</label>
+	      </div>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.judgment" value="No" ng-required="!apply.judgment">
+	        <label>No</label>
+	      </div>
+	    </div>
+	    <!-- end field -->
+	  </div>
+	  <!-- inline fields -->
+	  <div class="fields">
+	    <div class="sixteen wide field">
+				<label>Have you been declared bankrupt within the past 7 years?</label>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.bankrupt" value="Yes" ng-required="!apply.bankrupt">
+	        <label>Yes</label>
+	      </div>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.bankrupt" value="No" ng-required="!apply.bankrupt">
+	        <label>No</label>
+	      </div>
+	    </div>
+	    <!-- end field -->
+	  </div>
+	  <!-- inline fields -->
+	  <div class="fields">
+	    <div class="sixteen wide field">
+				<label>Have you had property foreclosed upon or given title or deed in lieu thereof in the last 7 years?</label>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.foreclose" value="Yes" ng-required="!apply.foreclose">
+	        <label>Yes</label>
+	      </div>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.foreclose" value="No" ng-required="!apply.foreclose">
+	        <label>No</label>
+	      </div>
+	    </div>
+	    <!-- end field -->
+	  </div>
+	  <!-- inline fields -->
+	  <div class="fields">
+	    <div class="sixteen wide field">
+				<label>Are you a party to a lawsuit?</label>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.lawsuit" value="Yes" ng-required="!apply.lawsuit">
+	        <label>Yes</label>
+	      </div>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.lawsuit" value="No" ng-required="!apply.lawsuit">
+	        <label>No</label>
+	      </div>
+	    </div>
+	    <!-- end field -->
+	  </div>
+	  <!-- inline fields -->
+	  <div class="fields">
+	    <div class="sixteen wide field">
+				<label>Have you been obligated on any loan resulted in foreclosure, transfer of title in lieu of foreclosure, or judgment?</label>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.obligate" value="Yes" ng-required="!apply.obligate">
+	        <label>Yes</label>
+	      </div>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.obligate" value="No" ng-required="!apply.obligate">
+	        <label>No</label>
+	      </div>
+	    </div>
+	    <!-- end field -->
+	  </div>
+	  <!-- inline fields -->
+	  <div class="fields">
+	    <div class="sixteen wide field">
+				<label>Are you presently delinquent or in default on any Federal debt or any other loan, mortgage, financial obligation bond, or loan guarantee?</label>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.delinqu" value="Yes" ng-required="!apply.delinqu">
+	        <label>Yes</label>
+	      </div>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.delinqu" value="No" ng-required="!apply.delinqu">
+	        <label>No</label>
+	      </div>
+	    </div>
+	    <!-- end field -->
+	  </div>
+	  <!-- inline fields -->
+	  <div class="fields">
+	    <div class="sixteen wide field">
+				<label>Are you obligated to pay child support or alimony?</label>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.alimony" value="Yes" ng-required="!apply.alimony">
+	        <label>Yes</label>
+	      </div>
+	      <div class="ui radio checkbox">
+	        <input type="radio" ng-model="apply.alimony" value="No" ng-required="!apply.alimony">
+	        <label>No</label>
+	      </div>
+	    </div>
+	    <!-- end field -->
+	  </div>
+	  <!-- inline fields -->
+	 <div class="button-container">
+	 	<button class="button ui black" href="#">Open your Saved Application</button>
+		<button class="button ui black" href="#">Call for Assistance</button>
+		<button class="button ui green" href="#" ui-sref='form.step6' ng-disabled="step5.$invalid">Next</button>
+	 </div>
+	</form>
+</div>
+<!-- end question -->
